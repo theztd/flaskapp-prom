@@ -1,16 +1,28 @@
-from flask import Flask, render_template, jsonify, make_response, request
+from flask import Flask, render_template, jsonify, make_response, request, g
 from os import getenv
-from time import sleep
+import time
 from random import randint
-
 from prometheus_flask_exporter import PrometheusMetrics
+
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Testing flask app', version='0.2')
 
+
 UP = getenv("UP", True)
 PORT = int(getenv("PORT", 5000))
+
+
+@app.before_request
+def start():
+    g.start = time.time()
+
+@app.after_request
+def after(response):
+    diff = (time.time() - g.start) * 1000
+    print("Full exec time: %s" % str(diff))
+    return response
 
 @app.route("/")
 def index():
@@ -28,13 +40,14 @@ def up():
 @app.route("/url<int:id>")
 def random_url_with_wait(id):
     wait_time = randint(1, int(id)+10) / 50
-    sleep(wait_time)
+    time.sleep(wait_time)
+    print("Done")
     return f"Welcome at the great url {id} page. You waited {wait_time}s"
 
 @app.route("/url<id>.json")
 def random_url_with_wait_json(id):
     wait_time = randint(5, 150) / 100
-    sleep(wait_time)
+    time.sleep(wait_time)
     _ret = {
             "msg": f"Welcome at the great url {id} page. You waited {wait_time}s",
             "wait_time": wait_time,
@@ -43,7 +56,7 @@ def random_url_with_wait_json(id):
         }
     r = make_response(jsonify(_ret), 200)
     r.content_type = "application/json"
-    
+    print("Done")
     return r
 
 
