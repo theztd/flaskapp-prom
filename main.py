@@ -12,6 +12,7 @@ metrics.info('app_info', 'Testing flask app', version='0.2')
 
 UP = getenv("UP", True)
 PORT = int(getenv("PORT", 5000))
+THREADED = bool(getenv("THREADED", True))
 
 
 @app.before_request
@@ -42,7 +43,11 @@ def random_url_with_wait(id):
     wait_time = randint(1, int(id)+10) / 50
     time.sleep(wait_time)
     print("Done")
-    return f"Welcome at the great url {id} page. You waited {wait_time}s"
+    r = make_response(f"Welcome at the great url {id} page. You waited {wait_time}s", 200)
+    r.headers["X-Frame-Options"] = "SAMEORIGIN"
+    r.headers["X-Content-Type-Options"] = "nosniff"
+    r.content_type = "text/plain"
+    return r
 
 @app.route("/url<id>.json")
 def random_url_with_wait_json(id):
@@ -55,6 +60,8 @@ def random_url_with_wait_json(id):
             "requested_url": f"/url{id}.json"
         }
     r = make_response(jsonify(_ret), 200)
+    r.headers["X-Frame-Options"] = "SAMEORIGIN"
+    r.headers["X-Content-Type-Options"] = "nosniff"
     r.content_type = "application/json"
     print("Done")
     return r
@@ -63,4 +70,4 @@ def random_url_with_wait_json(id):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, threaded=getenv(bool("THREADED"), True))
+    app.run(host="0.0.0.0", port=PORT, threaded=THREADED)
