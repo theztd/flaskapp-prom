@@ -63,4 +63,4 @@ def random_url_with_wait_json(id):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT, threaded=getenv(bool("THREADED"), True))
