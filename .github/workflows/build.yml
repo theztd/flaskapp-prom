@@ -9,15 +9,15 @@ on:
       - 'v*'
 
 jobs:
-  goreleaser:
+  build:
     runs-on: ubuntu-latest
     container:
       image: debian:latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
       - name: Prepare env
 	run: ls -al
         	
