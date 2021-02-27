@@ -29,8 +29,8 @@ jobs:
           ls -alh
       - name: Test package
         run: |
-          dpkg -i ./flaskapp.deb
-          tree /opt
+          apt install -f ./flaskapp.deb
+          ls /opt/flaskapp
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
         with:
