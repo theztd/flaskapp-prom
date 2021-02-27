@@ -24,9 +24,7 @@ jobs:
           apt install -y build-essential make tree
       - name: Build package
         run: |
-          ls -alh
-          tree
           cp -a src flaskapp/opt/flaskapp
           dpkg-deb -b flaskapp
-          tree
+          ls -alh
 
