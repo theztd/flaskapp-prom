@@ -19,4 +19,10 @@ jobs:
         with:
           fetch-depth: 0
       - name: Prepare env
-        run: ls -al
+        run: |
+          apt update
+          apt install -y dpkg-build make
+          cp -a src flaskapp/opt/flaskapp
+          dpkg-deb -b flaskapp
+          ll
+
