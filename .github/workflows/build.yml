@@ -21,8 +21,8 @@ jobs:
       - name: Prepare env
         run: |
           apt update
-          apt install -y dpkg-build make
+          apt install -y build-essential make tree
           cp -a src flaskapp/opt/flaskapp
           dpkg-deb -b flaskapp
-          ll
+          tree
 
