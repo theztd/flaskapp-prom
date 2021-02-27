@@ -27,4 +27,15 @@ jobs:
           cp -a src flaskapp/opt/flaskapp
           dpkg-deb -b flaskapp
           ls -alh
+      - name: Test package
+        run: |
+          dpkg -i ./flaskapp.deb
+          tree /opt
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: flaskapp.deb
+          retention-days: 5
+
 
