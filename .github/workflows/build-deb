@@ -1,0 +1,28 @@
+name: build
+
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - 
+        name: Prepare env
+	run: |
+          ls -al
+          env
+        	
