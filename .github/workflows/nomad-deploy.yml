@@ -1,4 +1,4 @@
-name: build
+name: Nomad deploy
 
 on:
   push:
