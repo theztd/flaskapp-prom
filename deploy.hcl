@@ -71,7 +71,7 @@ job "flaskapp" {
             
             resources {
                 cpu = 100
-                memmory = 32
+                memory = 64
             }
 
         }
