@@ -32,7 +32,7 @@ job "flaskapp" {
                 "traefik.http.routers.${NOMAD_JOB_NAME}-http.rule=Host(`${var.fqdn}`)",
             ]
 
-            port = "http"
+            port = "api"
 
 
             check {
