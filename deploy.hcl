@@ -9,7 +9,7 @@ variable "dcs" {
 }
 
 variable "api_image" {
-  type = "string"
+  type = string
   default = "theztd/flaskapp:latest"
 }
 
@@ -83,7 +83,7 @@ job "flaskapp" {
           driver = "docker"
 
           config {
-            image = "${var.api_image}"
+            image = var.api_image
             ports = ["api"]
             labels {
               group = "flask"
