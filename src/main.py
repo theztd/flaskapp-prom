@@ -31,7 +31,7 @@ def index():
 
 @app.route("/version")
 def version():
-    return "0.0.11"
+    return "0.0.13"
 
 @app.route("/up")
 @metrics.do_not_track()
