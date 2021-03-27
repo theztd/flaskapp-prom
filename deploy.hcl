@@ -86,10 +86,13 @@ job "flaskapp" {
             image = var.api_image
             #force_pull = true
             ports = ["api"]
+            env {
+                PORT = 5000
+                THREAD_COUNT = 2
+            }
             labels {
               group = "flask"
             }
-            command = "--port 5000 main:app"
           }
           
           resources {
