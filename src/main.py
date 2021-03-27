@@ -29,6 +29,10 @@ def after(response):
 def index():
     return "Uvodni stranka"
 
+@app.route("/version")
+def index():
+    return "0.0.11"
+
 @app.route("/up")
 @metrics.do_not_track()
 def up():
