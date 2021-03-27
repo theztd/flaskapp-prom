@@ -15,7 +15,7 @@ RUN pip3 install -r requirements.txt
 
 # Set ENV
 ENV PORT=5000
-    THREAD_COUNT=4
+ENV THREAD_COUNT=4
 
 # Expose port
 EXPOSE ${PORT}
