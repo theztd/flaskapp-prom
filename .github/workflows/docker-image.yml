@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  Publish:
 
     runs-on: ubuntu-latest
 
@@ -17,23 +17,17 @@ jobs:
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       
-    - name: Time
+    - name: Build and publish image 
       run: |
         export TIME=$(date +%F.%H.%M)
-    
-    - name: Build the Docker image
-      run: |
-        echo ${BRANCH} 
+        export BRANCH=${GITHUB_REF##*/}
+        # Build image 
         docker build . --file Dockerfile theztd/flaskapp:${BRANCH}
-        docker push theztd/flaskapp:${BRANCH}
-      env:
-        BRANCH=${GITHUB_REF##*/}
+
+        # Add tag with a build time
+        docker image tag theztd/flaskapp:${BRANCH} theztd/flaskapp:${CUR_VER}
       
-    - name: Tag the image
-      run: docker image tag theztd/flaskapp:${BRANCH} theztd/flaskapp:${CUR_VER}
-      
-    - name: Push images
-      run: |
+        # Push both images to docker registry
         docker push theztd/flaskapp:${BRANCH}
         docker push theztd/flaskapp:${CUR_VER}
 
