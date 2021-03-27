@@ -45,7 +45,7 @@ jobs:
         run: |
             export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
             env
-            nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:${BRANCH_NAME}" deploy.hcl
+            nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:main" deploy.hcl
         env:
             NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
             NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
