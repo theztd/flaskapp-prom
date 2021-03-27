@@ -22,7 +22,7 @@ jobs:
         export TIME=$(date +%F.%H.%M)
         export BRANCH=${GITHUB_REF##*/}
         # Build image 
-        docker build . --file Dockerfile theztd/flaskapp:${BRANCH}
+        docker build --tag theztd/flaskapp:${BRANCH} .
 
         # Add tag with a build time
         docker image tag theztd/flaskapp:${BRANCH} theztd/flaskapp:${CUR_VER}
