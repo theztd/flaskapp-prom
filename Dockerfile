@@ -18,5 +18,5 @@ EXPOSE 5000
 
 # Entrypoint
 ENTRYPOINT ["waitress-serve"]
-CMD ["main:app", "--port 5000"]
+CMD ["--port 5000", "main:app"]
 

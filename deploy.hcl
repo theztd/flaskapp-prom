@@ -16,6 +16,7 @@ job "flaskapp" {
         
         network {
             port "http" { to = 80 }
+            port "api" { to = 5000 }
         }
         
         service {
@@ -51,9 +52,7 @@ job "flaskapp" {
 
             config {
                 image   = "nginx"
-                ports = [
-					"http"
-				]
+                ports = [ "http" ]
                 
                 mount {
                     type = "volume"
@@ -73,9 +72,27 @@ job "flaskapp" {
                 cpu = 100
                 memory = 64
             }
+        } # END task nginx
 
+        task "flaskapp" {
+          driver = "docker"
+
+          config {
+            image = "${var.api_image}"
+            ports = ["api"]
+            labels {
+              group = "flask"
+            }
+            command = "--port 5000 main:app"
+          }
+          
+          resources {
+            cpu = 200
+            memory = 64
+          }
+        
         }
 
-    }
+    } # END group FE
 
 }
