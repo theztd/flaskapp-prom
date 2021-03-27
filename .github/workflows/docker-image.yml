@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Deploy application
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  Publish:
+  Docker build:
 
     runs-on: ubuntu-latest
 
@@ -31,3 +31,18 @@ jobs:
         docker push theztd/flaskapp:${BRANCH_NAME}
         docker push theztd/flaskapp:${TIME}
 
+  Nomad deploy:
+    runs-on: ubuntu-latest
+    container:
+      image: theztd/nomad:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Run job
+        run: |
+            nomad job run deploy.hcl
+        env:
+            NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
+            NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
