@@ -85,15 +85,16 @@ job "flaskapp" {
             image = var.api_image
             #force_pull = true
             ports = ["api"]
-            env {
-                PORT = 5000
-                THREAD_COUNT = 2
-            }
             labels {
               group = "flask"
             }
           }
           
+          env {
+            PORT = 5000
+            THREAD_COUNT = 2
+          }
+
           resources {
             cpu = 200
             memory = 64
