@@ -10,7 +10,6 @@ variable "dcs" {
 
 variable "api_image" {
   type = string
-  default = "theztd/flaskapp:latest"
 }
 
 job "flaskapp" {
