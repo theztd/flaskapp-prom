@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches:
-      - 'master'
-      - 'main'
+#    branches:
+#      - 'master'
+#      - 'main'
     tags:
       - 'v*'
 
@@ -43,8 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: $(date +%F.%H.%M)
+          release_name: Release $(date +%F.%H.%M)
           draft: false
           prerelease: false
       - name: Upload Release Asset
