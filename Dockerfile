@@ -22,5 +22,6 @@ EXPOSE ${PORT}
 
 
 # Entrypoint
-ENTRYPOINT ["/opt/flaskapp/entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash"]
+CMD ["/opt/flaskapp/entrypoint.sh"]
 
