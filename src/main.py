@@ -50,6 +50,7 @@ def random_url_with_wait(id):
     return r
 
 @app.route("/url<id>.json")
+@app.route("/api/<id>.json")
 def random_url_with_wait_json(id):
     wait_time = randint(5, 150) / 100
     time.sleep(wait_time)
