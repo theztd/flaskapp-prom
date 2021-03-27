@@ -15,19 +15,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Export current time as a version
-      run: export CUR_VER=$(date +%F.%H.%M)
+      run: |
+        export CUR_VER=$(date +%F.%H.%M)
+        export BRANCH=$(echo ${GITHUB_REF##*/})
     
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag theztd/flaskapp:${GITHUB_REF##*/}
+    - name: Build the Docker image theztd/flaskapp:${BRANCH}
+      run: docker build . --file Dockerfile --tag theztd/flaskapp:${BRANCH}
       
     - name: Tag the image
-      run: docker image tag theztd/flaskapp:${GITHUB_REF##*/} theztd/flaskapp:${CUR_VER}
+      run: docker image tag theztd/flaskapp:${BRANCH} theztd/flaskapp:${CUR_VER}
       
     - name: Push images
       run: |
-        docker push theztd/flaskapp:${GITHUB_REF##*/}
+        docker push theztd/flaskapp:${BRANCH}
         docker push theztd/flaskapp:${CUR_VER}
 
