@@ -25,9 +25,9 @@ jobs:
         docker build --tag theztd/flaskapp:${BRANCH_NAME} .
 
         # Add tag with a build time
-        docker image tag theztd/flaskapp:${BRANC_NAMEH} theztd/flaskapp:${CUR_VER}
+        docker image tag theztd/flaskapp:${BRANCH_NAME} theztd/flaskapp:${TIME}
       
         # Push both images to docker registry
         docker push theztd/flaskapp:${BRANCH_NAME}
-        docker push theztd/flaskapp:${CUR_VER}
+        docker push theztd/flaskapp:${TIME}
 
