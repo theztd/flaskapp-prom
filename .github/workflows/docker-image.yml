@@ -20,6 +20,7 @@ jobs:
       run: |
         env
         export TIME=$(date +%F.%H.%M)
+        export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
         # Build image 
         docker build --tag theztd/flaskapp:${BRANCH_NAME} .
 
