@@ -30,7 +30,7 @@ def index():
     return "Uvodni stranka"
 
 @app.route("/version")
-def index():
+def version():
     return "0.0.11"
 
 @app.route("/up")
