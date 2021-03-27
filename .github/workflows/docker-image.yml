@@ -33,6 +33,7 @@ jobs:
 
   Deploy:
     runs-on: ubuntu-latest
+    needs: Build
     container:
       image: theztd/nomad:latest
     steps:
