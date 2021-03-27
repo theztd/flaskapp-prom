@@ -1,0 +1,50 @@
+name: Deploy application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  Build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Build and publish image 
+      run: |
+        env
+        export TIME=$(date +%F.%H.%M)
+        export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
+        # Build image 
+        docker build --tag theztd/flaskapp:${BRANCH_NAME} .
+
+        # Add tag with a build time
+        docker image tag theztd/flaskapp:${BRANCH_NAME} theztd/flaskapp:${TIME}
+      
+        # Push both images to docker registry
+        docker push theztd/flaskapp:${BRANCH_NAME}
+        docker push theztd/flaskapp:${TIME}
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: Build
+    container:
+      image: theztd/nomad:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Run job
+        run: |
+            export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
+            nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:${BRANCH_NAME}" deploy.hcl
+        env:
+            NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
+            NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
