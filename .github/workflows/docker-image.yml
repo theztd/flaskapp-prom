@@ -17,7 +17,9 @@ jobs:
     - name: Export current time as a version
       run: |
         export CUR_VER=$(date +%F.%H.%M)
-        export BRANCH=$(echo ${GITHUB_REF##*/})
+        export BRANCH=${GITHUB_REF##*/}
+
+        env
     
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
