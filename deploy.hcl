@@ -8,6 +8,11 @@ variable "dcs" {
   default = ["dc1", "devel"]
 }
 
+variable "api_image" {
+  type = "string"
+  default = "theztd/flaskapp:latest"
+}
+
 job "flaskapp" {
     datacenters = var.dcs
 
