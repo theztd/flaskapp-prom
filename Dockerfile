@@ -13,10 +13,14 @@ WORKDIR /opt/flaskapp
 # Install deps
 RUN pip3 install -r requirements.txt
 
+# Set ENV
+ENV PORT=5000
+    THREAD_COUNT=4
+
 # Expose port
-EXPOSE 5000
+EXPOSE ${PORT}
+
 
 # Entrypoint
-ENTRYPOINT ["waitress-serve"]
-CMD ["--port 5000", "main:app"]
+ENTRYPOINT ["/opt/flaskapp/entrypoint.sh"]
 

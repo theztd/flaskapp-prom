@@ -84,6 +84,7 @@ job "flaskapp" {
 
           config {
             image = var.api_image
+            #force_pull = true
             ports = ["api"]
             labels {
               group = "flask"
