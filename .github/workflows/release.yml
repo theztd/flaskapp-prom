@@ -1,4 +1,4 @@
-name: build
+name: Release package
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  deb_release:
     runs-on: ubuntu-latest
     container:
       image: debian:latest
@@ -43,8 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: $(date +%F.%H.%M)
-          release_name: Release $(date +%F.%H.%M)
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }} - $(date +%F.%H.%M)
           draft: false
           prerelease: false
       - name: Upload Release Asset
