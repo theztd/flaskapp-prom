@@ -74,7 +74,7 @@ job "flaskapp" {
             
             resources {
                 cpu = 100
-                memory = 64
+                memory = 32
             }
         } # END task nginx
 
@@ -92,11 +92,11 @@ job "flaskapp" {
           
           env {
             PORT = 5000
-            THREAD_COUNT = 2
+            THREAD_COUNT = 1
           }
 
           resources {
-            cpu = 200
+            cpu = 400
             memory = 64
           }
         
