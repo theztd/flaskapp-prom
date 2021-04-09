@@ -1,5 +1,6 @@
 Flask
 waitress
+prometheus-client<0.8
 prometheus-flask-exporter
 graphene-prometheus
 graphene

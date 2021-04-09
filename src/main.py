@@ -5,6 +5,8 @@ import time
 from random import randint
 from prometheus_flask_exporter import PrometheusMetrics
 import schema
+import graphene_prometheus
+
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -76,7 +78,10 @@ app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
     'graphql',
     schema=schema.SCHEMA,
     pretty=True,
-    graphiql=True
+    graphiql=True,
+    midleware=[
+        graphene_prometheus.PrometheusMiddleware()
+    ]
 ))
 
 
