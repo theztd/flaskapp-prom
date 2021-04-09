@@ -1,9 +1,10 @@
 from flask import Flask, render_template, jsonify, make_response, request, g
+from flask_graphql import GraphQLView
 from os import getenv
 import time
 from random import randint
 from prometheus_flask_exporter import PrometheusMetrics
-
+import schema
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -70,6 +71,13 @@ def random_url_with_wait_json(id):
     r.content_type = "application/json"
     print("Done")
     return r
+
+app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
+    'graphql',
+    schema=schema.SCHEMA,
+    pretty=True,
+    graphiql=True
+))
 
 
 
