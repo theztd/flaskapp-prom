@@ -44,9 +44,9 @@ jobs:
         EOF
   
     - uses: actions/upload-artifact@v2
-        with:
-          name: deploy_script
-          path: ./deploy.sh
+      with:
+        name: deploy_script
+        path: ./deploy.sh
 
 
   Deploy:
@@ -66,7 +66,7 @@ jobs:
         run: |
             ls .
             sh ./deploy.sh
-            
+
             #export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
             #nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:main" deploy.hcl
 
