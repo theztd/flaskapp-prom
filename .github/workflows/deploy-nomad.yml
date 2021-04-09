@@ -21,6 +21,7 @@ jobs:
         env
         export TIME=$(date +%F.%H.%M)
         export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
+
         # Build image 
         docker build --tag theztd/flaskapp:${BRANCH_NAME} .
 
@@ -30,6 +31,23 @@ jobs:
         # Push both images to docker registry
         docker push theztd/flaskapp:${BRANCH_NAME}
         docker push theztd/flaskapp:${TIME}
+
+        # create deploy script
+        cat > ./deploy.sh<<EOF
+        #!/bin/sh
+
+        nomad job run \
+          -var="fqdn=flaskapp.fejk.net" \
+          -var="api_image=theztd/flaskapp:${TIME}" \
+          deploy.hcl
+        
+        EOF
+  
+    - uses: actions/upload-artifact@v2
+        with:
+          name: deploy_script
+          path: ./deploy.sh
+
 
   Deploy:
     runs-on: ubuntu-latest
@@ -41,10 +59,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - uses: actions/download-artifact@v2
+        with:
+          name: deploy_script
       - name: Run job
         run: |
+            ls .
+            sh ./deploy.sh
+            
             #export BRANCH_NAME=$(echo ${GITHUB_REF} | sed 's/refs\/heads\///g')
-            nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:main" deploy.hcl
+            #nomad job run -var="fqdn=flaskapp.fejk.net" -var="api_image=theztd/flaskapp:main" deploy.hcl
+
         env:
             NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
             NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
