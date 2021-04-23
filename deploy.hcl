@@ -96,8 +96,8 @@ job "flaskapp" {
           }
 
           resources {
-            cpu = 400
-            memory = 64
+            cpu = 100
+            memory = 32
           }
         
         }
