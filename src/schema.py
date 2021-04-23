@@ -30,10 +30,17 @@ class Person(graphene.ObjectType):
 
 class Query(graphene.ObjectType):
     array = graphene.List(Person, size=graphene.Int(default_value=1))
+    version = graphene.String()
+    env = graphene.String()
 
     def resolve_array(root, info, size):
         return DATA[:size]
 
+    def resolve_version(root, info):
+        return "0.0.1"
+
+    def resolve_env(root, info):
+        return "devel"
 
 SCHEMA = graphene.Schema(query=Query)
 

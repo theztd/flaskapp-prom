@@ -17,6 +17,8 @@ UP = getenv("UP", True)
 PORT = int(getenv("PORT", 5000))
 THREADED = bool(getenv("THREADED", True))
 
+app.debug = True
+
 
 @app.before_request
 def start():
@@ -30,7 +32,7 @@ def after(response):
 
 @app.route("/")
 def index():
-    return "Uvodni stranka"
+    return "<H1> Mate stesti!!! </H1><br><hr noshade><H2>Prave jste nasli tuto uvodni stranku</H2>"
 
 @app.route("/version")
 def version():
@@ -78,11 +80,11 @@ app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
     'graphql',
     schema=schema.SCHEMA,
     pretty=True,
-    graphiql=True,
-    midleware=[
-        graphene_prometheus.PrometheusMiddleware()
-    ]
+    graphiql=True
 ))
+    #midleware=[
+    #    graphene_prometheus.PrometheusMiddleware()
+    #]
 
 
 
