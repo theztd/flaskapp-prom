@@ -5,7 +5,7 @@ on: [push]
 jobs:
   chrome:
     runs-on: ubuntu-20.04
-    container: 
+#    container: cypress/browsers:node12.18.3-chrome87-ff82
 #    needs: install
     strategy:
       fail-fast: false
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: run tests
+      - name: Run tests
         uses: cypress-io/github-action@v1
         timeout-minutes: 10
         with:
@@ -24,9 +24,6 @@ jobs:
           parallel: true
           group: ${{ matrix.viewports }}
           config: "viewport=${{ matrix.viewports }}"
-          # on Mac and Linux we can use "npm start"
-          start: npm run-tests
-          # but for this particular project on Windows we need a different start command
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
