@@ -26,4 +26,5 @@ jobs:
           config: "viewport=${{ matrix.viewports }}"
         env:
           # pass the Dashboard record key as an environment variable
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
