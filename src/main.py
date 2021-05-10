@@ -45,7 +45,6 @@ def up():
         return "OK"
     else:
         return make_response("Maintanance", 400)
-    
 
 @app.route("/url<int:id>")
 def random_url_with_wait(id):

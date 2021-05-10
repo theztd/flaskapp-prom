@@ -1,0 +1,23 @@
+{
+  "name": "flaskapp-prom",
+  "version": "2021.04.06",
+  "description": "Cypress test casses",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theztd/flaskapp-prom.git"
+  },
+  "author": "Marek Sirovy",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/theztd/flaskapp-prom.git/issues"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "devDependencies": {
+    "cypress": "7.1.0"
+  },
+  "scripts": {
+    "run-tests": "cypress run --record --key $CYPRESS_RECORD_KEY"
+  }
+}
