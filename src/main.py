@@ -32,7 +32,27 @@ def after(response):
 
 @app.route("/")
 def index():
-    return "<H1> Mate stesti!!! </H1><br><hr noshade><H2>Prave jste nasli tuto uvodni stranku</H2>"
+    return """
+        <html>
+        <body>
+        
+        <H1> API responser </H1>
+        
+        <hr noshade>
+        
+        <H2>Friendly response to every request...</H2>
+
+        <p>Api response delay simulator. There are many API endpoints generating randomly delayed response</p>
+
+        <ul>
+            <li><a href="/graphql" class="button" test-data="graphql-api">/graphql UI</a></li>
+            <li><a href="/url1" class="button" test-data="rest-api-txt">/url${ID} REST text</a></li>
+            <li><a href="/url1.json" class="button" test-data="rest-api-json">/url${ID}.json REST json</a></li>
+        </ul>
+
+        </body>
+        </html>
+    """
 
 @app.route("/version")
 def version():
