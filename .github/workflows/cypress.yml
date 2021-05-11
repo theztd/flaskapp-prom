@@ -13,7 +13,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        viewports: ["macbook-13", "ipad-mini", "iphone-xr", "samsung-note9"]
+        viewports:
+        - name: Desktopp
+          width: 1920
+          height: 1080
+        - name: iPad-Pro-12
+          width: 1024
+          height: 1366
+        - name: iPhone-x
+          width: 375
+          height: 812
+
 
     steps:
       - name: Checkout
@@ -25,8 +35,9 @@ jobs:
         with:
           record: true
           parallel: true
-          group: ${{ matrix.viewports }}
-          config: "viewport=${{ matrix.viewports }}"
+          group: ${{ matrix.name }}
+          config: "viewportHeight=${{ matrix.height }},viewportWidth=${{ matrix.width }}"
+          baseUrl: https://flaskapp.fejk.net
         env:
           # pass the Dashboard record key as an environment variable
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true

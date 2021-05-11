@@ -3,6 +3,6 @@
     "chromeWebSecurity": false,
     "env": {
         "TEST_URL": "localhost:5000",
-        "APP_URL": "https://flaskapp.fejk.net"
+        "APP_URL": "/"
     }
 }

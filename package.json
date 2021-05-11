@@ -18,6 +18,7 @@
     "cypress": "7.1.0"
   },
   "scripts": {
-    "run-tests": "cypress run --record --key $CYPRESS_RECORD_KEY"
+    "run-tests": "cypress run --record --key $CYPRESS_RECORD_KEY",
+    "run-dev": "cypress run --config \"baseUrl=http://localhost:5000\""
   }
 }
