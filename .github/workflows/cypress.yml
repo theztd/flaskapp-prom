@@ -37,8 +37,8 @@ jobs:
           parallel: true
           group: ${{ matrix.name }}
           config: "viewportHeight=${{ matrix.height }},viewportWidth=${{ matrix.width }}"
-          baseUrl: https://flaskapp.fejk.net
         env:
           # pass the Dashboard record key as an environment variable
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_BASE_URL: https://flaskapp.fejk.net
