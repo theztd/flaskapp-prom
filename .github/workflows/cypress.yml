@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        - name: Desktopp
+        device:
+        - name: Desktop
           width: 1920
           height: 1080
         - name: iPad-Pro-12
@@ -34,8 +35,8 @@ jobs:
         with:
           record: true
           parallel: true
-          group: ${{ matrix.name }}
-          config: "viewportHeight=${{ matrix.height }},viewportWidth=${{ matrix.width }}"
+          group: ${{ matrix.device.name }}
+          config: "viewportHeight=${{ matrix.device.height }},viewportWidth=${{ matrix.device.width }}"
         env:
           # pass the Dashboard record key as an environment variable
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
