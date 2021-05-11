@@ -2,11 +2,14 @@ name: Cypress Tests
 
 on: [push]
 
+
+# ToDo: start app before deploy and run tests, after tests pass, than do deploy
+
 jobs:
   chrome:
     runs-on: ubuntu-latest
 #    container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: Deploy
+#    needs: Deploy
     strategy:
       fail-fast: false
       matrix:
