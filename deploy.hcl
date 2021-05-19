@@ -73,8 +73,9 @@ job "flaskapp" {
             }
             
             resources {
-                cpu = 100
-                memory = 32
+                cpu = 50
+                memory = 16
+                memory_max = 32
             }
         } # END task nginx
 
@@ -96,8 +97,9 @@ job "flaskapp" {
           }
 
           resources {
-            cpu = 100
+            cpu = 50
             memory = 32
+            memory_max = 64
           }
         
         }
