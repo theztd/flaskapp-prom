@@ -29,11 +29,11 @@ class Person(graphene.ObjectType):
     #     return 22
 
 class Query(graphene.ObjectType):
-    array = graphene.List(Person, size=graphene.Int(default_value=1))
+    users = graphene.List(Person, size=graphene.Int(default_value=1))
     version = graphene.String()
     env = graphene.String()
 
-    def resolve_array(root, info, size):
+    def resolve_users(root, info, size):
         return DATA[:size]
 
     def resolve_version(root, info):

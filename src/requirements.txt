@@ -5,3 +5,4 @@ prometheus-flask-exporter
 graphene-prometheus
 graphene
 Flask-GraphQL
+flask-cors

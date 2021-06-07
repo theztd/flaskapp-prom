@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, make_response, request, g
 from flask_graphql import GraphQLView
+from flask_cors import CORS
 from os import getenv
 import time
 from random import randint
@@ -9,6 +10,7 @@ import graphene_prometheus
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/graphql/*": {"origins": "*"}})
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Testing flask app', version='0.2')
 
