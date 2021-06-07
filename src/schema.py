@@ -3,7 +3,7 @@ from os import path, getenv
 
 try:
     import graphene
-    from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
+    #from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 
 except ImportError as err:
     print("Install dependencies!!!")
