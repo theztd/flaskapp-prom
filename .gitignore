@@ -16,4 +16,8 @@ env.bak/
 venv.bak/
 Pipfile
 
+*.sqlite3
+*.sqlite
+*.db
+
 *.deb
