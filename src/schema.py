@@ -1,14 +1,15 @@
+import json
+from os import path, getenv
+
 try:
     import graphene
     from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
-    import json
-    from os import path, getenv
 
 except ImportError as err:
     print("Install dependencies!!!")
     print(err)
 
-ENV = str(getenv("ENV", "devel"))
+ENV = getenv("ENV", "devel")
 VERSION = "unknown"
 
 try:
