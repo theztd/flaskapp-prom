@@ -8,6 +8,7 @@ try:
 except ImportError as err:
     print("Install dependencies!!!")
     print(err)
+    exit(22)
 
 ENV = getenv("ENV", "devel")
 VERSION = "unknown"
