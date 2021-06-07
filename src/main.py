@@ -1,26 +1,35 @@
 from flask import Flask, render_template, jsonify, make_response, request, g
-from flask_graphql import GraphQLView
-from flask_cors import CORS
 from os import getenv
 import time
 from random import randint
+
+# Prometheus metrics
 from prometheus_flask_exporter import PrometheusMetrics
+
+# CORS
+from flask_cors import CORS
+
+# Prometheus metrics
+from prometheus_flask_exporter import PrometheusMetrics
+
+# GraphQL
+from flask_graphql import GraphQLView
 import schema
 import graphene_prometheus
 
 
 app = Flask(__name__)
+
 CORS(app, resources={r"/graphql/*": {"origins": "*"}})
+
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Testing flask app', version='0.2')
-
 
 UP = getenv("UP", True)
 PORT = int(getenv("PORT", 5000))
 THREADED = bool(getenv("THREADED", True))
 
 app.debug = True
-
 
 @app.before_request
 def start():
@@ -106,7 +115,6 @@ app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
     #midleware=[
     #    graphene_prometheus.PrometheusMiddleware()
     #]
-
 
 
 
