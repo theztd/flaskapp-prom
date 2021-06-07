@@ -1,10 +1,22 @@
 try:
     import graphene
+    from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
     import json
-    import os
-    from pprint import pprint
+    from os import path, getenv
+
 except ImportError as err:
+    print("Install dependencies!!!")
     print(err)
+
+ENV = str(getenv("ENV", "devel"))
+VERSION = "unknown"
+
+try:
+    with open("./VERSION") as ver:
+        VERSION = ver.read().strip()
+
+except IOError as err:
+    print("Unable to find VERSION file, but continue...")
 
 
 DATA = [
@@ -22,12 +34,7 @@ class Person(graphene.ObjectType):
     name = graphene.String(value = graphene.String(default_value="Kumarovic kumar"))
     age = graphene.Int()
 
-    # def resolve_name(root, info, value):
-    #     return value
-
-    # def resolve_age(root, info):
-    #     return 22
-
+# register all queries
 class Query(graphene.ObjectType):
     users = graphene.List(Person, size=graphene.Int(default_value=1))
     version = graphene.String()
@@ -37,16 +44,18 @@ class Query(graphene.ObjectType):
         return DATA[:size]
 
     def resolve_version(root, info):
-        return "0.0.1"
+        return VERSION
 
     def resolve_env(root, info):
-        return "devel"
+        return ENV
 
 SCHEMA = graphene.Schema(query=Query)
 
 
 # ---------   TEST   ------
 if __name__ == "__main__":
+    from pprint import pprint
+
     print(SCHEMA)
     cq1 = '''
 query myquery {

@@ -1,7 +1,10 @@
 from flask import Flask, render_template, jsonify, make_response, request, g
-from os import getenv
+from os import getenv, path
 import time
 from random import randint
+
+# SQLalchemy
+from flask_sqlalchemy import SQLAlchemy
 
 # Prometheus metrics
 from prometheus_flask_exporter import PrometheusMetrics
@@ -17,17 +20,31 @@ from flask_graphql import GraphQLView
 import schema
 import graphene_prometheus
 
-
-app = Flask(__name__)
-
-CORS(app, resources={r"/graphql/*": {"origins": "*"}})
-
-metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'Testing flask app', version='0.2')
-
 UP = getenv("UP", True)
 PORT = int(getenv("PORT", 5000))
 THREADED = bool(getenv("THREADED", True))
+ENV = str(getenv("ENV", "devel"))
+VERSION = "unknown"
+DB_URI = str(getenv("DB_URI", "sqlite:///develop.sqlite3"))
+
+try:
+    with open("./VERSION") as ver:
+        VERSION = ver.read().strip()
+
+except IOError as err:
+    print("Unable to find VERSION file, but continue...")
+
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+db = SQLAlchemy(app)
+
+# Set CORS for graphql
+CORS(app, resources={r"/graphql/*": {"origins": "*"}})
+
+# Configure metrics for prometheus
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Testing flask app', version=VERSION)
 
 app.debug = True
 
@@ -67,7 +84,7 @@ def index():
 
 @app.route("/version")
 def version():
-    return "0.1.14"
+    return VERSION
 
 @app.route("/up")
 @metrics.do_not_track()
@@ -112,11 +129,12 @@ app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
     pretty=True,
     graphiql=True
 ))
-    #midleware=[
-    #    graphene_prometheus.PrometheusMiddleware()
-    #]
 
 
 
 if __name__ == "__main__":
+    # preparation for app with DB
+    if not path.exists(DB_URI):
+        db.create_all()
+    
     app.run(host="0.0.0.0", port=PORT, threaded=THREADED)
