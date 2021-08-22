@@ -39,6 +39,13 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 db = SQLAlchemy(app)
 
+def checkDB():
+    try:
+        db.session.execute("select 1;")
+        return True
+    except:
+        return False
+
 # Set CORS for graphql
 CORS(app, resources={r"/graphql/*": {"origins": "*"}})
 
@@ -93,6 +100,21 @@ def up():
         return "OK"
     else:
         return make_response("Maintanance", 400)
+
+@app.route("/status")
+@metrics.do_not_track()
+def status():
+    _ret = {
+        "db": checkDB(),
+        "app": True,
+        "port": PORT,
+        "threaded": THREADED,
+        "version": VERSION
+    }
+    r = make_response(jsonify(_ret), 200)
+    r.content_type = "application/json"
+    return r
+
 
 @app.route("/url<int:id>")
 def random_url_with_wait(id):
