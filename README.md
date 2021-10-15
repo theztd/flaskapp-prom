@@ -1,3 +1,5 @@
+[![Deploy](https://github.com/theztd/flaskapp-prom/actions/workflows/deploy-nomad.yml/badge.svg)](https://github.com/theztd/flaskapp-prom/actions/workflows/deploy-nomad.yml)
+
 # flaskapp-prom
 
 Simple demo application able to reply you via graphQL or REST api.
