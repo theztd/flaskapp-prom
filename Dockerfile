@@ -5,10 +5,10 @@ LABEL authors="Marek Sirovy"
 LABEL contact="msirovy@gmail.com"
 
 # Copy application source to image
-copy ./src/ /opt/flaskapp
+copy ./apigw/ /opt/apigw
 
 # Set application's home as workdir
-WORKDIR /opt/flaskapp
+WORKDIR /opt/apigw
 
 # Install deps
 RUN pip3 install -r requirements.txt
@@ -23,5 +23,5 @@ EXPOSE ${PORT}
 
 # Entrypoint
 #ENTRYPOINT ["/bin/bash"]
-CMD ["/opt/flaskapp/entrypoint.sh"]
+CMD ["/opt/apigw/entrypoint.sh"]
 
