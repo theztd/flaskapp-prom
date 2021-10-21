@@ -1,0 +1,62 @@
+name: Release package be.deb
+
+on:
+  push:
+#    branches:
+#      - 'master'
+#      - 'main'
+    tags:
+      - 'v*'
+
+jobs:
+  deb_release:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Prepare env
+        run: |
+          apt update
+          apt install -y build-essential make tree
+      - name: Build package
+        run: |
+          cp -a deb_pkg_template be
+          cp -a be be/opt/be
+          dpkg-deb -b be
+          ls -alh
+      - name: Test package
+        run: |
+          apt install -y -f ./be.deb
+          ls /opt/be
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: be.deb
+          retention-days: 5
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./be.deb
+          asset_name: be.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+

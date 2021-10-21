@@ -1,8 +1,35 @@
 [![Deploy](https://github.com/theztd/flaskapp-prom/actions/workflows/deploy-nomad.yml/badge.svg)](https://github.com/theztd/flaskapp-prom/actions/workflows/deploy-nomad.yml)
 
-# flaskapp-prom
+# Microservidce nomad app (demo)
 
-Simple demo application able to reply you via graphQL or REST api.
+Simple demo application writen in [Flask](https://flask.palletsprojects.com/en/2.0.x/), [Vue.js](https://vuejs.org) and [GOlang](https://golang.org) for playing with design concepts and technology. Application can reply via graphQL or REST api, uses websocket and is deployed via [nomadproject.io](https://nomadproject.io). 
+
+
+```bash
+
+                    +-----------+
+                    |     FE    |
+                    |  Vue app  |
+                    +-----------+
+                          | 
+                          V
+                    +-----------+
+                    |   APIGW   |
+                    |  GraphQL  |
+                    |   Flask   |
+                    +-----------+
+                          |
+                          V
+      ------------------------------------------- Intranet
+       |            |                  
+       V            V
+  +---------+  +---------+
+  |   BE    |  |   AUTH  |
+  |  Flask  |  |  Flask  |  
+  +---------+  +---------+
+
+
+```
 
 
 Available ENV parameters

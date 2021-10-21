@@ -1,4 +1,4 @@
-name: Release package
+name: Release package apigw.deb
 
 on:
   push:
@@ -24,18 +24,19 @@ jobs:
           apt install -y build-essential make tree
       - name: Build package
         run: |
-          cp -a src flaskapp/opt/flaskapp
-          dpkg-deb -b flaskapp
+          cp -a deb_pkg_template apigw
+          cp -a apigw apigw/opt/apigw
+          dpkg-deb -b apigw
           ls -alh
       - name: Test package
         run: |
-          apt install -y -f ./flaskapp.deb
-          ls /opt/flaskapp
+          apt install -y -f ./apigw.deb
+          ls /opt/apigw
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: flaskapp.deb
+          path: apigw.deb
           retention-days: 5
       - name: Create Release
         id: create_release
@@ -54,8 +55,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./flaskapp.deb
-          asset_name: flaskapp.deb
+          asset_path: ./apigw.deb
+          asset_name: apigw.deb
           asset_content_type: application/vnd.debian.binary-package
 
 

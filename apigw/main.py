@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, make_response, request, g
-from os import getenv, path
+from os import getenv, path, uname
 import time
 from random import randint
 
@@ -27,6 +27,8 @@ ENV = str(getenv("ENV", "devel"))
 VERSION = "unknown"
 DB_URI = str(getenv("DB_URI", "sqlite:///develop.sqlite3"))
 
+
+
 try:
     with open("./VERSION") as ver:
         VERSION = ver.read().strip()
@@ -38,6 +40,8 @@ except IOError as err:
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 db = SQLAlchemy(app)
+
+INSTANCE = uname()[1]
 
 def checkDB():
     try:
@@ -51,7 +55,7 @@ CORS(app, resources={r"/graphql/*": {"origins": "*"}})
 
 # Configure metrics for prometheus
 metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'Testing flask app', version=VERSION)
+metrics.info('app_info', 'Testing flask app', version=VERSION, instance=INSTANCE)
 
 app.debug = True
 
@@ -62,7 +66,7 @@ def start():
 @app.after_request
 def after(response):
     diff = (time.time() - g.start) * 1000
-    print("Full exec time: %s" % str(diff))
+    print("%s - exec time: %s" % (request.full_path, str(diff)))
     return response
 
 @app.route("/")
@@ -120,7 +124,6 @@ def status():
 def random_url_with_wait(id):
     wait_time = randint(1, int(id)+10) / 50
     time.sleep(wait_time)
-    print("Done")
     r = make_response(f"Welcome at the great url {id} page. You waited {wait_time}s", 200)
     r.headers["X-Frame-Options"] = "SAMEORIGIN"
     r.headers["X-Content-Type-Options"] = "nosniff"
@@ -136,13 +139,14 @@ def random_url_with_wait_json(id):
             "msg": f"Welcome at the great url {id} page. You waited {wait_time}s",
             "wait_time": wait_time,
             "status": "ok",
+            "version": VERSION,
+            "instance": INSTANCE,
             "requested_url": f"/url{id}.json"
         }
     r = make_response(jsonify(_ret), 200)
     r.headers["X-Frame-Options"] = "SAMEORIGIN"
     r.headers["X-Content-Type-Options"] = "nosniff"
     r.content_type = "application/json"
-    print("Done")
     return r
 
 app.add_url_rule('/graphql', view_func=GraphQLView.as_view(

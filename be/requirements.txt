@@ -1,0 +1,14 @@
+Flask
+waitress
+prometheus-client<0.8
+prometheus-flask-exporter
+graphene-prometheus
+graphene
+# graphene_sqlalchemy
+Flask-GraphQL
+flask-cors
+flask_sqlalchemy
+# WS graphql
+# gevent
+# graphql_ws
+# flask_sockets

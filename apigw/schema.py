@@ -1,5 +1,6 @@
 import json
-from os import path, getenv
+from os import path, getenv, uname
+from requests import get
 
 try:
     import graphene
@@ -12,6 +13,7 @@ except ImportError as err:
 
 ENV = getenv("ENV", "devel")
 VERSION = "unknown"
+INSTANCE = uname()[1]
 
 try:
     with open("./VERSION") as ver:
@@ -21,25 +23,21 @@ except IOError as err:
     print("Unable to find VERSION file, but continue...")
 
 
-DATA = [
-    {
-        "name": "Karel",
-        "age": 21
-    },
-    {
-        "name": "Pavel",
-        "age": 27
-    }
-]
+DATA = get("http://localhost:5001/api/user/list.json").json()
+print(DATA)
+
 
 class Person(graphene.ObjectType):
     name = graphene.String(value = graphene.String(default_value="Kumarovic kumar"))
-    age = graphene.Int()
+    key_length = graphene.Int()
+    key = graphene.String()
+
 
 # register all queries
 class Query(graphene.ObjectType):
     users = graphene.List(Person, size=graphene.Int(default_value=1))
     version = graphene.String()
+    instance = graphene.String()
     env = graphene.String()
 
     def resolve_users(root, info, size):
@@ -47,6 +45,9 @@ class Query(graphene.ObjectType):
 
     def resolve_version(root, info):
         return VERSION
+
+    def resolve_instance(root, info):
+        return INSTANCE
 
     def resolve_env(root, info):
         return ENV
